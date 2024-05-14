@@ -33,7 +33,12 @@ function handle = tiledlayoutlabel(varargin)
     for i = 1:length(ax)
         % set label text
         handle(i) = text(ax(i), 0, 1.02, label(i), Units="normalized", HorizontalAlignment="left", VerticalAlignment="bottom");
-        set(handle(i), props{:});
+    end
+
+    title(findobj(ax, "-depth", 0, "type", "axes", "-and", "Title", ""), " ");
+
+    if ~isempty(props)
+        set(handle, props{:});
     end
 end
 
