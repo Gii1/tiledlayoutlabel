@@ -39,7 +39,7 @@ function [layout, labels] = parseinput(input)
 
     % default labelset
     labelsets = dictionary;
-    labelsets("letter") = {string(char(97:122)')'+ ")"};
+    labelsets("letter") = {string(('a':'z')')'+ ")"};
     labelsets("number") = {@(i) sprintf("%i)", i)};
 
     % get name of labelset from input
