@@ -8,7 +8,7 @@ This toolbox adds the function tiledlayoutlabel, which adds identifying labels t
 - Letter: a), b), c)
 - Numbers: 1), 2), 3)
 
-The function also accepts custom labels.
+The function also accepts custom labels either as an array of string or a function handle.
 
 ## Installation
 
