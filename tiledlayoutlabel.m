@@ -1,6 +1,5 @@
-function tiledlayoutlabel(varargin)
-    % TILEDLAYOUTLABEL Label each subplot for a figure with a
-    % tiledlayout
+function handle = tiledlayoutlabel(varargin)
+    % TILEDLAYOUTLABEL Label each subplot of a tiledlayout
     %   TILEDLAYOUTLABEL labels each subplot of the current figure using
     %   letters in alphabetical order. The tiledlayout have to be a direct
     %   child of the figure.
@@ -10,27 +9,35 @@ function tiledlayoutlabel(varargin)
     %   customset should be either a string array or a function handle
     %   which takes an integer as an input and returns a string label as an
     %   output.
+    %   TILEDLAXOUTLABEL(labelset, Name, Value) specifies text object
+    %   properties using one or more name-value pairs.
     %   TILEDLAYOUTLABEL(tiledlayout, __) labels the axes in the target layout.
+    %   handle = TILEDLAYOUT(__) returns all text objects as an array.
 
 
     % parse input
-    [layout, label] = parseinput(varargin);
+    [layout, label, props] = parseinput(varargin);
 
     % get all components from the layout
     ax = flip(findobj(layout, "-depth", 1, "type", "axes", "-or", "type", "polaraxes", "-or", "type", "geographicaxes"));
 
+    % Check if there are enough labels
     if isstring(label) && length(label) < length(ax)
         error("Not enough label for the number of axes.");
     end
 
+    % create array for text objects
+    handle = gobjects(1, length(ax));
+
     % iterate over all axes
     for i = 1:length(ax)
         % set label text
-        text(ax(i), 0, 1.02, label(i), Units="normalized", HorizontalAlignment="left", VerticalAlignment="bottom");
+        handle(i) = text(ax(i), 0, 1.02, label(i), Units="normalized", HorizontalAlignment="left", VerticalAlignment="bottom");
+        set(handle(i), props{:});
     end
 end
 
-function [layout, labels] = parseinput(input)
+function [layout, labels, props] = parseinput(input)
     
     if ~isempty(input) && isgraphics(input{1}, "tiledlayout")
         % get layout from input
@@ -78,6 +85,14 @@ function [layout, labels] = parseinput(input)
         else
             error("Custom label set should be either a string array or a function handle");
         end
+        
+        input(1) = [];
+    end
+
+    if ~isempty(input)
+        props = input;
+    else
+        props = {};
     end
 end
 
