@@ -16,13 +16,8 @@ function tiledlayoutlabel(varargin)
 
     % iterate over all axes
     for i = 1:length(ax)
-        % get axis size converted in charactersize
-        axunit = get(ax(i), "Units");
-        set(ax(i), Units="characters");
-        axsize = get(ax(i), "Position");
-        set(ax(i), Units=axunit);
-
-        text(ax(i), 0, axsize(4) + .5, label(i), Units="characters", HorizontalAlignment="left", VerticalAlignment="bottom");
+        % set label text
+        text(ax(i), 0, 1.05, label(i), Units="normalized", HorizontalAlignment="left", VerticalAlignment="bottom");
     end
 end
 
@@ -44,15 +39,18 @@ function [layout, labels] = parseinput(input)
 
     % default labelset
     labelsets = dictionary;
+    labelsets("letter") = {string(char(97:122)')'+ ")"};
     labelsets("number") = {@(i) sprintf("%i)", i)};
 
+    % get name of labelset from input
     if ~isempty(input)
         setname = string(input{1});
         input{1} = [];
     else
-        setname = "number";
+        setname = "letter";
     end
 
+    % get labels from default set
     if labelsets.isKey(setname)
         labels = labelsets{setname};
     end
