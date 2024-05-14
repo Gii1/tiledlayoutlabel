@@ -17,12 +17,12 @@ function tiledlayoutlabel(varargin)
     [layout, label] = parseinput(varargin);
 
     % get all components from the layout
-    ax = flip(layout.Children);
+    ax = flip(findobj(layout, "-depth", 1, "type", "axes", "-or", "type", "polaraxes", "-or", "type", "geographicaxes"));
 
     % iterate over all axes
     for i = 1:length(ax)
         % set label text
-        text(ax(i), 0, 1.05, label(i), Units="normalized", HorizontalAlignment="left", VerticalAlignment="bottom");
+        text(ax(i), 0, 1.02, label(i), Units="normalized", HorizontalAlignment="left", VerticalAlignment="bottom");
     end
 end
 
