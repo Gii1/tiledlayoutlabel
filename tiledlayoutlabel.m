@@ -2,14 +2,15 @@ function tiledlayoutlabel(varargin)
     % TILEDLAYOUTLABEL Label each subplot for a figure with a
     % tiledlayout
     %   TILEDLAYOUTLABEL labels each subplot of the current figure using
-    %   letters in alphabetical order.
+    %   letters in alphabetical order. The tiledlayout have to be a direct
+    %   child of the figure.
     %   TILEDLAYOUTLABEL(labelset) specifies the set to use for labeling.
     %   The following sets are avaible: "letter", "number"
     %   TILEDLAYOUTLABEL("custom", customset) specifies a custom set.
     %   customset should be either a string array or a function handle
     %   which takes an integer as an input and returns a string label as an
     %   output.
-    %   TILEDLAYOUTLABEL(obj, __) labels the target figure.
+    %   TILEDLAYOUTLABEL(tiledlayout, __) labels the axes in the target layout.
 
 
     % parse input
@@ -26,21 +27,20 @@ function tiledlayoutlabel(varargin)
 end
 
 function [layout, labels] = parseinput(input)
-    % get figure either from input or gcf
-    if ~isempty(input) && isgraphics(input{1}, "figure")
-        fig = figure(input{1}); 
+    
+    if ~isempty(input) && isgraphics(input{1}, "tiledlayout")
+        % get layout from input
+        layout = input{1}; 
         input(1) = [];
     else
-        fig = gcf;
+        % get layout from current figure
+        layout = findobj(gcf, "-depth", 1, "type", "tiledlayout");
+        
+        if isempty(layout)
+            error("The current figure has no tiledlayout object");
+        end
     end
-
-    % get layout object from figure
-    if ~isgraphics(fig.Children, "tiledlayout")
-        error("The figure has no tiledlayout component");
-    end
-
-    layout = fig.Children;
-
+    
     % default labelset
     labelsets = dictionary;
     labelsets("letter") = {string(('a':'z')')'+ ")"};
