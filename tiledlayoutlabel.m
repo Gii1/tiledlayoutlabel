@@ -3,8 +3,12 @@ function tiledlayoutlabel(varargin)
     % tiledlayout
     %   TILEDLAYOUTLABEL labels each subplot of the current figure using
     %   letters in alphabetical order.
-    %   TILEDLAYOUTLABEL(labelset) specifies the set to use for labeling. 
+    %   TILEDLAYOUTLABEL(labelset) specifies the set to use for labeling.
+    %   The following sets are avaible: "letter", "number"
     %   TILEDLAYOUTLABEL("custom", customset) specifies a custom set.
+    %   customset should be either a string array or a function handle
+    %   which takes an integer as an input and returns a string label as an
+    %   output.
     %   TILEDLAYOUTLABEL(obj, __) labels the target figure.
 
 
@@ -25,7 +29,7 @@ function [layout, labels] = parseinput(input)
     % get figure either from input or gcf
     if ~isempty(input) && isgraphics(input{1}, "figure")
         fig = figure(input{1}); 
-        input{1} = [];
+        input(1) = [];
     else
         fig = gcf;
     end
@@ -45,13 +49,35 @@ function [layout, labels] = parseinput(input)
     % get name of labelset from input
     if ~isempty(input)
         setname = string(input{1});
-        input{1} = [];
+        input(1) = [];
     else
         setname = "letter";
     end
 
-    % get labels from default set
     if labelsets.isKey(setname)
+        % get labels from default set
         labels = labelsets{setname};
+    elseif strcmp(setname, "custom")
+        % get labels from custom set
+
+        % check if custom set is specified
+        if isempty(input)
+            error("Not enough input arguments.");
+        end
+
+        if isstringequivalent(input{1})
+            % label is string array
+            labels = string(input{1});
+        elseif isa(input{1}, "function_handle")
+            % label is function handle
+            labels = input{1};
+        else
+            error("Custom label set should be either a string array or a function handle");
+        end
     end
+end
+
+% check if var is a string or char array
+function bool = isstringequivalent(var)
+    bool = isstring(var) || ischar(var) || iscellstr(var);
 end
