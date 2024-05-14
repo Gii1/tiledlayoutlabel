@@ -19,6 +19,10 @@ function tiledlayoutlabel(varargin)
     % get all components from the layout
     ax = flip(findobj(layout, "-depth", 1, "type", "axes", "-or", "type", "polaraxes", "-or", "type", "geographicaxes"));
 
+    if isstring(label) && length(label) < length(ax)
+        error("Not enough label for the number of axes.");
+    end
+
     % iterate over all axes
     for i = 1:length(ax)
         % set label text
