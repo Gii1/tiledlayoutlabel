@@ -33,9 +33,12 @@ function handle = tiledlayoutlabel(varargin)
     for i = 1:length(ax)
         % set label text
         handle(i) = text(ax(i), 0, 1.02, label(i), Units="normalized", HorizontalAlignment="left", VerticalAlignment="bottom");
-    end
 
-    title(findobj(ax, "-depth", 0, "type", "axes", "-and", "Title", ""), " ");
+        % add empty title for spacing
+        if isgraphics(ax(i), "axes") && strcmp(ax(i).Title, "")
+            title(ax(i), " ");
+        end
+    end
 
     if ~isempty(props)
         set(handle, props{:});
