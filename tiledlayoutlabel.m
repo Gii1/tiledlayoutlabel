@@ -35,7 +35,7 @@ function handle = tiledlayoutlabel(varargin)
         handle(i) = text(ax(i), 0, 1.02, label(i), Units="normalized", HorizontalAlignment="left", VerticalAlignment="bottom");
 
         % add empty title for spacing
-        if isgraphics(ax(i), "axes") && strcmp(ax(i).Title, "")
+        if isgraphics(ax(i), "axes") && strcmp(ax(i).Title.String, "")
             title(ax(i), " ");
         end
     end
