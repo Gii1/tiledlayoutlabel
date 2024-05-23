@@ -1,0 +1,25 @@
+{
+    "tiledlayoutlabel":
+    {
+        "inputs": 
+        [
+            {
+                "mutuallyExclusiveGroup":
+                [
+                    [
+                        {"name":"labelset", "kind":"ordered", "type":"choices=[\"letter\", \"number\"]"}
+                    ],
+                    [
+                        {"name":"labelset", "kind":"required", "type":"choices=[\"custom\"]"},
+                        {"name":"customset", "kind":"required", "type":[["cellstr", "vector"], ["string", "vector"], ["char"], ["function_handle", "scalar"]]}
+                    ]
+                ]
+            },
+            {"name":"properties", "kind":"properties", "type":"matlab.graphics.primitive.Text"}
+        ],
+        "outputs":
+        [
+            {"name":"texthandle", "type": "matlab.graphics.primitive.Text"}
+        ]
+    }
+}
